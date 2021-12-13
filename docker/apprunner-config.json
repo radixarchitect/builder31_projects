@@ -1,0 +1,13 @@
+{
+    "ImageRepository": {
+        "ImageIdentifier": "993504207343.dkr.ecr.us-east-2.amazonaws.com/glabdkrdemo:latest",
+        "ImageConfiguration": {
+            "Port": "80"
+        },
+        "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": false,
+    "AuthenticationConfiguration": {
+        "AccessRoleArn":"arn:aws:iam::993504207343:role/service-role/AppRunnerECRAccessRole"
+    }
+}
