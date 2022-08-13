@@ -1,0 +1,13 @@
+{
+    "ImageRepository": {
+        "ImageIdentifier": "<your account id>.dkr.ecr.us-east-2.amazonaws.com/<your container image>:latest",
+        "ImageConfiguration": {
+            "Port": "80"
+        },
+        "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": false,
+    "AuthenticationConfiguration": {
+        "AccessRoleArn":"arn:aws:iam::<your account id>:role/service-role/AppRunnerECRAccessRole"
+    }
+}
