@@ -10,7 +10,7 @@ function New-RandomS3DataFiles {
         Write-Host "A number of files was not provided, so we will use a default of 200";
     }
     $pathTerminator = $s3BucketPath.Substring($s3BucketPath.Length -1);
-    if(($s3BucketPath -eq $null) -or ($pathTerminator -ne "/") {
+    if(($s3BucketPath -eq $null) -or ($pathTerminator -ne "/")) {
         Write-Host "S3 Bucket Path is incorrect";
     }
     $s3bucket = "s3://"+$s3BucketPath;
