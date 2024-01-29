@@ -8,7 +8,7 @@ RUN usermod -u 1000 www-data && usermod -G staff www-data && \
     groupmod -g 50 staff
 #Install needed packages
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y apt-utils python3-pip wget phpmyadmin curl git libapache2-mod-php mysql-server php-mysql python3-setuptools php-xdebug && \
+    apt-get install -y apt-utils wget python3-pip wget phpmyadmin curl git libapache2-mod-php mysql-server php-mysql python3-setuptools php-xdebug && \
     apt-get -y autoremove && apt-get -y clean && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 # Install supervisor 4
@@ -47,7 +47,8 @@ RUN a2enmod rewrite
 
 # Configure /app folder with sample app
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
-ADD app/ /app
+RUN cd /app && wget "https://wordpress.org/latest.tar.gz" && tar -xzf /app/latest.tar.gz
+#ADD app/ /app
 
 #Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M
