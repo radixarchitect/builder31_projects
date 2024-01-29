@@ -1,3 +1,11 @@
+(
+    [Parameter(Mandatory=$False)]       [String]$numFiles,
+    [Parameter(Mandatory=$True)]        [String]$s3BucketPath,
+    [Parameter(Mandatory=$False)]       [Int]$numRecords,
+    [Parameter(Mandatory=$True)]        [String]$type
+
+)
+
 function New-RandomS3DataFiles {
     param(
         [int] $numFiles,
@@ -75,3 +83,4 @@ function New-RandomBinaryData {
     [IO.File]::WriteAllBytes($fileName, $out);
     return $fileName;
 }
+New-RandomS3DataFiles -numFiles $numFiles -s3BucketPath $s3BucketPath -numRecords $numRecords -type $type;
