@@ -17,26 +17,25 @@ function New-RandomS3DataFiles {
         $numFiles = 200;
         Write-Host "A number of files was not provided, so we will use a default of 200";
     }
-    $pathTerminator = $s3BucketPath.Substring($s3BucketPath.Length -1);
-    if(($s3BucketPath -eq $null) -or ($pathTerminator -ne "/")) {
-        Write-Host "S3 Bucket Path is incorrect";
-    }
-    $s3bucket = "s3://"+$s3BucketPath;
-    #separate bucket name from bucket path
-    $bucketName = $s3BucketPath.Substring(0,$s3BucketPath.IndexOf("/"));
-    $prefix = $s3BucketPath.Substring($bucketName.Length,$s3BucketPath.Length-1);
-    #createRandomFile;
-    for ($i=0; $i -lt $numFiles; $i++) {
-        import-module AWSPowerShell.NetCore;
-        if($type -eq "demographic") {
-            $file = New-RandomDemographicData -numRecords $numRecords -outputFile randemo.json -outputFormat JSON;
+    if($s3BucketPath -eq $null) {
+         Write-Host "S3 path incorrect. Please try again!"; 
+    } else {
+        $s3bucket = "s3://"+$s3BucketPath;
+        #separate bucket name from bucket path
+        # $bucketName = $s3BucketPath.Substring(0,$s3BucketPath.IndexOf("/"));
+        # $prefix = $s3BucketPath.Substring($bucketName.Length,$s3BucketPath.Length-1);
+        # #createRandomFile;
+        for ($i=0; $i -lt $numFiles; $i++) {
+            import-module AWSPowerShell.NetCore;
+            if($type -eq "demographic") {
+                $file = New-RandomDemographicData -numRecords $numRecords -outputFile randemo.json -outputFormat JSON;
+            }
+            if($type -eq "binary") {
+                $file = New-RandomBinaryData -maxSize 1800
+            }
+            # Write-S3Object -File ./$fileName -KeyPrefix $prefix -BucketName $bucketName;
+            aws s3 mv ./$file $s3bucket
         }
-        if($type -eq "binary") {
-            $file = New-RandomBinaryData -maxSize 1800
-        }
-
-        # Write-S3Object -File ./$fileName -KeyPrefix $prefix -BucketName $bucketName;
-        aws s3 mv ./$file $s3bucket
     }
 
 }
@@ -82,5 +81,8 @@ function New-RandomBinaryData {
     #Write File to File System
     [IO.File]::WriteAllBytes($fileName, $out);
     return $fileName;
+}
+if(($s3BucketPath -eq $null) -or ($s3BucketPath.Length -lt 2)) {
+    $s3BucketPath = Read-Host "Please enter S3 bucket path";
 }
 New-RandomS3DataFiles -numFiles $numFiles -s3BucketPath $s3BucketPath -numRecords $numRecords -type $type;
