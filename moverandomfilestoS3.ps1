@@ -13,10 +13,6 @@ function New-RandomS3DataFiles {
         [string] $numRecords,
         [string] $type
     )
-    if($numFiles -lt 0) {
-        $numFiles = 200;
-        Write-Host "A number of files was not provided, so we will use a default of 200";
-    }
     if($s3BucketPath -eq $null) {
          Write-Host "S3 path incorrect. Please try again!"; 
     } else {
@@ -84,5 +80,12 @@ function New-RandomBinaryData {
 }
 if(($s3BucketPath -eq $null) -or ($s3BucketPath.Length -lt 2)) {
     $s3BucketPath = Read-Host "Please enter S3 bucket path";
+}
+if(($numFiles -eq $null) -or ($numFiles -lt 1)) {
+    $numFiles = 200;
+    Write-Host "A number of files was not provided, so we will use a default of 200";
+}
+if(($type -eq $null) -or (($type -ne "demographic") -and ($type -ne "binary"))) {
+    $type = "demographic";
 }
 New-RandomS3DataFiles -numFiles $numFiles -s3BucketPath $s3BucketPath -numRecords $numRecords -type $type;
