@@ -89,4 +89,5 @@ if(($numFiles -eq $null) -or ($numFiles -lt 1)) {
 if(($type -eq $null) -or (($type -ne "demographic") -and ($type -ne "binary"))) {
     $type = "demographic";
 }
+if($numRecords -eq $null) { $numRecords = 50; }
 New-RandomS3DataFiles -numFiles $numFiles -s3BucketPath $s3BucketPath -numRecords $numRecords -type $type;
