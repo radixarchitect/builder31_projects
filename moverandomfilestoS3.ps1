@@ -24,7 +24,8 @@ function New-RandomS3DataFiles {
         for ($i=0; $i -lt $numFiles; $i++) {
             import-module AWSPowerShell.NetCore;
             if($type -eq "demographic") {
-                $file = New-RandomDemographicData -numRecords $numRecords -outputFile randemo.json -outputFormat JSON;
+                $randNum = Get-Random;
+                $file = New-RandomDemographicData -numRecords $numRecords -outputFile rand-$randNum-demo.json -outputFormat JSON;
             }
             if($type -eq "binary") {
                 $file = New-RandomBinaryData -maxSize 1800
@@ -42,9 +43,9 @@ function New-RandomDemographicData {
         [string] $outputFormat
     )
     #base URL for web request. Size defines the number of records in the result set. This is provided as JSON.
-    $baseURL = "https://random-data-api.com/api/v2/users?size=100"
-    if(numRecords -gt 100) { $numRecords = 100; Write-Host "Number of records cannot exceed 100"; }
-    if(numRecords -lt 1) { $numRecords = 1; Write-Host "Number of records cannot be less than 1"; }
+    $baseURL = "https://random-data-api.com/api/v2/users?size=99"
+    if($numRecords -gt 100) { $numRecords = 99; Write-Host "Number of records cannot exceed 100"; }
+    if($numRecords -lt 1) { $numRecords = 1; Write-Host "Number of records cannot be less than 1"; }
     if($numRecords -eq $null) {$numRecords = 50; }
     #Request Records
     $rawDataFeed = Invoke-RestMethod -Uri "$baseURL$numRecords";
