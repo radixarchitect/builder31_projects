@@ -43,7 +43,7 @@ function New-RandomDemographicData {
         [string] $outputFormat
     )
     #base URL for web request. Size defines the number of records in the result set. This is provided as JSON.
-    $baseURL = "https://random-data-api.com/api/v2/users?size="
+    $baseURL = "https://random-data-api.com/api/v2/users?response_type=json&size="
     if($numRecords -gt 100) { $numRecords = 99; Write-Host "Number of records cannot exceed 100"; }
     if($numRecords -lt 1) { $numRecords = 1; Write-Host "Number of records cannot be less than 1"; }
     if($numRecords -eq $null) {$numRecords = 50; }
