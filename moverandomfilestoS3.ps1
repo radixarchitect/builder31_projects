@@ -51,7 +51,7 @@ function New-RandomDemographicData {
     $rawDataFeed = Invoke-RestMethod -Uri "$baseURL$numRecords";
     if($outputFile -ne $null) {
         if($outputFormat -eq "JSON" ) {
-            $rawDataFeed | ConvertTo-JSON | Out-File ./$outputFile;
+            $rawDataFeed | ConvertTo-JSON -Depth 3 | Out-File ./$outputFile;
         }
         if($outputFormat -eq "CSV") {
             $jsonData = $rawDataFeed | ConvertFrom-Json;
