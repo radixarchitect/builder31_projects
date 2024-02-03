@@ -51,7 +51,7 @@ function New-RandomDemographicData {
     $rawDataFeed = Invoke-RestMethod -Uri "$baseURL$numRecords";
     if($outputFile -ne $null) {
         if($outputFormat -eq "JSON" ) {
-            $rawDataFeed | Out-File ./$outputFile;
+            $rawDataFeed | ConvertTo-JSON | Out-File ./$outputFile;
         }
         if($outputFormat -eq "CSV") {
             $jsonData = $rawDataFeed | ConvertFrom-Json;
@@ -60,7 +60,7 @@ function New-RandomDemographicData {
         }
     } else {
         #should this be simplified with a case switch statement?
-        $rawDataFeed | Out-File ./$outputFile;
+        $rawDataFeed | ConvertTo-JSON | Out-File ./$outputFile;
         Write-Host "Supported formats include CSV and JSON. The default of JSON has been chosen";
     }
     return $outputFile;   
