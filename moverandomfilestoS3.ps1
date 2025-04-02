@@ -23,12 +23,12 @@ function New-RandomS3DataFiles {
         # #createRandomFile;
         for ($i=0; $i -lt $numFiles; $i++) {
             import-module AWSPowerShell.NetCore;
+            $randNum = Get-Random;
             if($type -eq "demographic") {
-                $randNum = Get-Random;
                 $file = New-RandomDemographicData -numRecords $numRecords -outputFile rand-$randNum-demo.json -outputFormat JSON;
             }
             if($type -eq "binary") {
-                $file = New-RandomBinaryData -maxSize 1800
+                $file = New-RandomBinaryData -maxSize 8 -fileNameprefix "$randNum-bin-"
             }
             # Write-S3Object -File ./$fileName -KeyPrefix $prefix -BucketName $bucketName;
             aws s3 mv ./$file $s3bucket
@@ -83,11 +83,12 @@ if(($s3BucketPath -eq $null) -or ($s3BucketPath.Length -lt 2)) {
     $s3BucketPath = Read-Host "Please enter S3 bucket path";
 }
 if(($numFiles -eq $null) -or ($numFiles -lt 1)) {
-    $numFiles = 200;
-    Write-Host "A number of files was not provided, so we will use a default of 200";
+    #$numFiles = 200;
+    #Write-Host "A number of files was not provided, so we will use a default of 200";
+    $numFiles = Read-Host "Please provide a number of files to generate: ";
 }
 if(($type -eq $null) -or (($type -ne "demographic") -and ($type -ne "binary"))) {
-    $type = "demographic";
+    $type = Read-Host "(demographic/binary)?: ";
 }
 if($numRecords -eq $null) { $numRecords = 50; }
 New-RandomS3DataFiles -numFiles $numFiles -s3BucketPath $s3BucketPath -numRecords $numRecords -type $type;
